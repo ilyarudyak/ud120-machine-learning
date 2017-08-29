@@ -30,18 +30,19 @@ def parse_out_text(f):
         text_string = content[1].translate(translator)
 
         # project part 2: comment out the line below
-        words = text_string
+        # words = text_string
 
         # split the text string into individual words, stem each word,
         # and append the stemmed word to words (make sure there's a single
         # space between each stemmed word)
-
-    return words
+        stemmer = SnowballStemmer("english")
+        words = [stemmer.stem(word) for word in text_string.strip().split()]
+    return ' '.join(words)
 
 
 def main():
-    ff = open("../text_learning/test_email.txt", "r")
-    text = parse_out_text(ff)
+    f = open("../text_learning/test_email.txt", "r")
+    text = parse_out_text(f)
     print(text)
 
 
