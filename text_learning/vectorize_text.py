@@ -5,6 +5,7 @@ import pickle
 import re
 
 from tools.parse_out_email_text import parse_out_text
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def vectorize_text():
@@ -42,26 +43,26 @@ def vectorize_text():
         for path in from_person:
             # only look at first 200 emails when developing
             # once everything is working, remove this line to run over full dataset
-            temp_counter += 1
-            if temp_counter < 200:
-                path = os.path.join('/Users/ilyarudyak/', path[:-1])
-                # print('{}:{}'.format(temp_counter, path))
-                email_file = open(path, "r")
+            # temp_counter += 1
+            # if temp_counter < 200:
+            path = os.path.join('/Users/ilyarudyak/', path[:-1])
+            # print('{}:{}'.format(temp_counter, path))
+            email_file = open(path, "r")
 
-                # use parseOutText to extract the text from the opened email
-                email_text = parse_out_text(email_file)
+            # use parseOutText to extract the text from the opened email
+            email_text = parse_out_text(email_file)
 
-                # use str.replace() to remove any instances of the words
-                for word in ["sara", "shackleton", "chris", "germani"]:
-                    email_text = email_text.replace(word, "")
+            # use str.replace() to remove any instances of the words
+            for word in ["sara", "shackleton", "chris", "germani"]:
+                email_text = email_text.replace(word, "")
 
-                # append the text to word_data
-                word_data.append(email_text)
+            # append the text to word_data
+            word_data.append(email_text)
 
-                # append a 0 to from_data if email is from Sara, and 1 if email is from Chris
-                from_data.append(0 if name == SARA else 1)
+            # append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+            from_data.append(0 if name == SARA else 1)
 
-                email_file.close()
+            email_file.close()
 
     print("emails processed")
     from_sara.close()
@@ -70,13 +71,19 @@ def vectorize_text():
     pickle.dump(word_data, open("ir_word_data.pkl", "wb"))
     pickle.dump(from_data, open("ir_email_authors.pkl", "wb"))
 
-    # in Part 4, do TfIdf vectorization here
-
     return word_data
+
+
+def transform(word_data):
+    vectorizer = TfidfVectorizer(stop_words='english')
+    X = vectorizer.fit_transform(word_data)
+    return vectorizer, X
 
 
 if __name__ == '__main__':
     word_data = vectorize_text()
+    vectorizer, X = transform(word_data)
 
-    authors_data = pickle.load(open("ir_email_authors.pkl", "rb"))
-    print(type(authors_data), len(authors_data), authors_data[:10])
+    vocabulary = vectorizer.get_feature_names()
+    print(len(vocabulary), vocabulary[34597])
+
