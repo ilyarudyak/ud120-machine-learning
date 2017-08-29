@@ -6,61 +6,77 @@ import re
 
 from tools.parse_out_email_text import parse_out_text
 
-"""
-    Starter code to process the emails from Sara and Chris to extract
-    the features and get the documents ready for classification.
 
-    The list of all the emails from Sara are in the from_sara list
-    likewise for emails from Chris (from_chris)
+def vectorize_text():
+    """
+        Starter code to process the emails from Sara and Chris to extract
+        the features and get the documents ready for classification.
 
-    The actual documents are in the Enron email dataset, which
-    you downloaded/unpacked in Part 0 of the first mini-project. If you have
-    not obtained the Enron email corpus, run startup.py in the tools folder.
+        The list of all the emails from Sara are in the from_sara list
+        likewise for emails from Chris (from_chris)
 
-    The data is stored in lists and packed away in pickle files at the end.
-"""
+        The actual documents are in the Enron email dataset, which
+        you downloaded/unpacked in Part 0 of the first mini-project. If you have
+        not obtained the Enron email corpus, run startup.py in the tools folder.
 
-from_sara = open("from_sara.txt", "r")
-from_chris = open("from_chris.txt", "r")
+        The data is stored in lists and packed away in pickle files at the end.
+    """
 
-from_data = []
-word_data = []
+    SARA = 'sara'
+    CHRIS = 'chris'
 
-# temp_counter is a way to speed up the development--there are
-# thousands of emails from Sara and Chris, so running over all of them
-# can take a long time
-# temp_counter helps you only look at the first 200 emails in the list so you
-# can iterate your modifications quicker
-temp_counter = 0
+    from_sara = open("from_sara.txt", "r")
+    from_chris = open("from_chris.txt", "r")
 
-for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
-    for path in from_person:
-        # only look at first 200 emails when developing
-        # once everything is working, remove this line to run over full dataset
-        temp_counter += 1
-        if temp_counter < 200:
-            path = os.path.join('..', path[:-1])
-            print(path)
-            email = open(path, "r")
+    from_data = []
+    word_data = []
 
-            # use parseOutText to extract the text from the opened email
+    # temp_counter is a way to speed up the development--there are
+    # thousands of emails from Sara and Chris, so running over all of them
+    # can take a long time
+    # temp_counter helps you only look at the first 200 emails in the list so you
+    # can iterate your modifications quicker
+    temp_counter = 0
 
-            # use str.replace() to remove any instances of the words
-            # ["sara", "shackleton", "chris", "germani"]
+    for name, from_person in [(SARA, from_sara), (CHRIS, from_chris)]:
+        for path in from_person:
+            # only look at first 200 emails when developing
+            # once everything is working, remove this line to run over full dataset
+            temp_counter += 1
+            if temp_counter < 200:
+                path = os.path.join('/Users/ilyarudyak/', path[:-1])
+                # print('{}:{}'.format(temp_counter, path))
+                email_file = open(path, "r")
 
-            # append the text to word_data
+                # use parseOutText to extract the text from the opened email
+                email_text = parse_out_text(email_file)
 
-            # append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+                # use str.replace() to remove any instances of the words
+                for word in ["sara", "shackleton", "chris", "germani"]:
+                    email_text = email_text.replace(word, "")
+
+                # append the text to word_data
+                word_data.append(email_text)
+
+                # append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+                from_data.append(0 if name == SARA else 1)
+
+                email_file.close()
+
+    print("emails processed")
+    from_sara.close()
+    from_chris.close()
+
+    pickle.dump(word_data, open("ir_word_data.pkl", "wb"))
+    pickle.dump(from_data, open("ir_email_authors.pkl", "wb"))
+
+    # in Part 4, do TfIdf vectorization here
+
+    return word_data
 
 
-            email.close()
+if __name__ == '__main__':
+    word_data = vectorize_text()
 
-print("emails processed")
-from_sara.close()
-from_chris.close()
-
-pickle.dump(word_data, open("your_word_data.pkl", "w"))
-pickle.dump(from_data, open("your_email_authors.pkl", "w"))
-
-
-# in Part 4, do TfIdf vectorization here
+    authors_data = pickle.load(open("ir_email_authors.pkl", "rb"))
+    print(type(authors_data), len(authors_data), authors_data[:10])
