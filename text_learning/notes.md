@@ -2,6 +2,7 @@
 
 - extract text of an email;
 - remove punctuation;
+- tokenize text (manually);
 - stem with `nltk.SnowballStemmer`; (1)
 
 ### `vectorize_text()`
