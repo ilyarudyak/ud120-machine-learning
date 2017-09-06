@@ -19,6 +19,7 @@ def load_data():
     """
     enron_data = pickle.load(open("final_project_dataset.pkl", "rb"))
     return enron_data
+enron_data = load_data()
 
 
 def process_name(name):
@@ -58,11 +59,25 @@ def quantified(keys):
     """
      return number of people with quantified keys (non NAN)
     """
-    quants = [[(1 if not is_nan(enron_data[name][key]) else 0) for name in enron_data] for key in keys]
+    quants = [[(1 if not is_nan(enron_data[name][key]) else 0)
+               for name in enron_data] for key in keys]
     return {key: sum(quant) for key, quant in zip(keys, quants)}
 
+
+def total_poi():
+    return sum([(1 if enron_data[name]['poi'] else 0) for name in enron_data])
+
+
+def quantified_poi(keys):
+    """
+     return number of people with quantified keys (non NAN)
+    """
+    quants = [[(1 if not is_nan(enron_data[name][key]) else 0)
+               for name in enron_data if enron_data[name]['poi']] for key in keys]
+    return {key: sum(quant) for key, quant in zip(keys, quants)}
+
+
 if __name__ == '__main__':
-    enron_data = load_data()
 
     james_prentice = process_name('James Prentice')
     wesley_colwell = process_name('Wesley Colwell')
