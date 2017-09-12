@@ -15,3 +15,5 @@ SSE is not normalized (bigger number of point gives us bigger SSE);
 possible to get a good linear regression on given data;
 
 ### mini-project
+
+- outliers may have significant effect on the slope of regression;

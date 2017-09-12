@@ -8,8 +8,7 @@
     Draws a little scatterplot of the training/testing data
 
     You fill in the regression code where indicated:
-"""    
-
+"""
 
 import pickle
 from tools.feature_format import featureFormat, targetFeatureSplit
@@ -18,9 +17,8 @@ from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LinearRegression
 
 
-def get_data():
+def get_data(features_list):
     dictionary = pickle.load(open("final_project_dataset_modified.pkl", "rb"))
-    features_list = ["bonus", "salary"]
     # list the features you want to look at--first item in the
     # list will be the "target" feature
     data = featureFormat(dictionary, features_list, remove_any_zeroes=True,
@@ -30,8 +28,8 @@ def get_data():
     return train_test_split(features, target, test_size=0.5, random_state=42)
 
 
-def fit_regression():
-    feature_train, feature_test, target_train, target_test = get_data()
+def fit_regression(features_list):
+    feature_train, feature_test, target_train, target_test = get_data(features_list)
 
     # Your regression goes here!
     # Please name it reg, so that the plotting code below picks it up and
@@ -43,10 +41,10 @@ def fit_regression():
     return reg
 
 
-def plot_data():
-    feature_train, feature_test, target_train, target_test = get_data()
+def plot_data(features_list):
+    feature_train, feature_test, target_train, target_test = get_data(features_list)
     features_list = ["bonus", "salary"]
-    reg = fit_regression()
+    reg = fit_regression(features_list)
 
     # draw the scatterplot, with color-coded training and testing points
     train_color = "b"
@@ -64,6 +62,12 @@ def plot_data():
     # draw the regression line, once it's coded
     try:
         plt.plot(feature_test, reg.predict(feature_test))
+
+        # build regression on test data
+        reg.fit(feature_test, target_test)
+        plt.plot(feature_train, reg.predict(feature_train), color="r")
+        print(reg.coef_)
+
     except NameError:
         pass
     plt.xlabel(features_list[1])
@@ -73,4 +77,9 @@ def plot_data():
 
 
 if __name__ == '__main__':
-    plot_data()
+    features_list = ['bonus', 'salary']
+    # features_list = ['bonus', 'long_term_incentive']
+    # feature_train, feature_test, target_train, target_test = get_data(features_list)
+    # reg = fit_regression(features_list)
+    # print(reg.coef_, reg.intercept_, reg.score(feature_train, target_train), reg.score(feature_test, target_test))
+    plot_data(features_list)
