@@ -1,19 +1,30 @@
 #!/usr/bin/python
 
 import pickle
-import sys
-import matplotlib.pyplot
-sys.path.append("../tools/")
-from feature_format import featureFormat, targetFeatureSplit
+import matplotlib.pyplot as plt
+from tools.feature_format import featureFormat, targetFeatureSplit
+import numpy as np
 
 
-### read in data dictionary, convert to numpy array
-data_dict = pickle.load( open("../final_project/final_project_dataset.pkl", "r") )
-features = ["salary", "bonus"]
-data = featureFormat(data_dict, features)
+def get_data():
+    # read in data dictionary, convert to numpy array
+    data_dict = pickle.load(open('final_project_dataset.pkl','rb'))
+    del data_dict['TOTAL']
+    features = ['salary', 'bonus']
+    return featureFormat(data_dict, features)
 
 
-### your code below
+def plot_data(salary_data):
+    salary, bonus = salary_data[:, 0], salary_data[:, 1]
+    plt.scatter(salary, bonus)
+    plt.xlabel('salary')
+    plt.ylabel('bonus')
+    plt.show()
 
+
+# your code below
+if __name__ == '__main__':
+    salary_data = get_data()
+    plot_data(salary_data)
 
 

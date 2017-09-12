@@ -7,3 +7,6 @@ for example in robotics but not in some areas like fraud detection;
 biggest error (~10%); repeat if necessary;
 
 ### mini-project
+
+- we removed total as an outlier, but we saved entries for CEO even if 
+it's really big; 
