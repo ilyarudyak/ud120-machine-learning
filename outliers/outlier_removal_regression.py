@@ -7,6 +7,19 @@ from sklearn.linear_model import LinearRegression
 from outliers.data_utils import get_age_worth_data
 
 
+def regression_wo_removal():
+    ages_train, ages_test, net_worths_train, net_worths_test = get_age_worth_data()
+
+    reg = LinearRegression()
+    reg.fit(ages_train, net_worths_train)
+
+    print(ages_train.shape[0], reg.coef_, reg.score(ages_test, net_worths_test))
+
+    plt.plot(ages_train, reg.predict(ages_train), color="blue")
+    plt.scatter(ages_train, net_worths_train)
+    plt.show()
+
+
 def remove_outliers():
     ages_train, ages_test, net_worths_train, net_worths_test = get_age_worth_data()
 
@@ -16,6 +29,7 @@ def remove_outliers():
     # the plotting code below works, and you can see what your regression looks like
     # reg = LinearRegression()
     # reg.fit(ages_train, net_worths_train)
+
     # print(reg.coef_, reg.score(ages_test, net_worths_test))
     #
     # try:
@@ -51,4 +65,4 @@ def remove_outliers():
 
 
 if __name__ == '__main__':
-    remove_outliers()
+    regression_wo_removal()
