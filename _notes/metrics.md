@@ -1,0 +1,12 @@
+### theory
+
+- the problem with accuracy that we sometimes interested in 
+true/false positive/negative (for example we're really interested in
+right diagnosis);
+
+- we may use confusion matrix 2x2: actual vs. predicted;
+
+- recall: true positive / (true positive + false negative);
+precision: true positive / (true positive + false positive);
+in case of HC: TP = 10, FN = 6 (in row, we identified someone else (N), but it's HC (F)), 
+FP = 0 (in column, we identified HC (P), but it's someone else (F));
