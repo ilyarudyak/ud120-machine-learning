@@ -26,6 +26,8 @@ def get_data():
     data = featureFormat(data_dict, features_list, sort_keys='../tools/python2_lesson13_keys.pkl')
     labels, features = targetFeatureSplit(data)
 
+    # print(labels[:20], features[:20])
+
     # clf = DecisionTreeClassifier()
     # clf.fit(features, labels)
     # print(accuracy_score(labels, clf.predict(features)))
@@ -37,10 +39,10 @@ def simplest_model():
     features_train, features_test, labels_train, labels_test = get_data()
     clf = DecisionTreeClassifier()
     clf.fit(features_train, labels_train)
-    return accuracy_score(labels_test, clf.predict(features_test))
+    return accuracy_score(labels_test, clf.predict(features_test)), clf
 
 
 if __name__ == '__main__':
-    print(simplest_model())
+    get_data()
 
 

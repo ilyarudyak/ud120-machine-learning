@@ -8,19 +8,39 @@
     Start by loading/formatting the data...
 """
 
-import pickle
-from tools.feature_format import featureFormat, targetFeatureSplit
-
-data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "rb"))
-
-### add more features to features_list!
-features_list = ["poi", "salary"]
-
-data = featureFormat(data_dict, features_list)
-labels, features = targetFeatureSplit(data)
+from validation.validate_poi import get_data
+from sklearn.tree import DecisionTreeClassifier
+import numpy as np
+from sklearn.metrics import precision_score, recall_score
 
 
+def confusion_matrix():
+    features_train, features_test, labels_train, labels_test = get_data()
+    clf = DecisionTreeClassifier()
+    clf.fit(features_train, labels_train)
 
-### your code goes here 
+    predicted_poi = clf.predict(features_test)
+    return precision_score(labels_test, predicted_poi)
 
+
+def quiz_matrix():
+    predictions = np.array([0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1])
+    true_labels = np.array([0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0])
+
+    positives = predictions[true_labels.nonzero()]
+    print(positives)
+    true_positives = np.sum(positives)
+
+    negatives = predictions[np.where(true_labels == 0)[0]]
+    print(negatives)
+    true_negatives = len(negatives) - np.sum(negatives)
+
+    false_positives = np.sum(negatives)
+    false_negatives = len(positives) - np.sum(positives)
+
+    return true_positives, true_negatives, false_positives, false_negatives
+
+
+if __name__ == '__main__':
+    print(quiz_matrix())
 
