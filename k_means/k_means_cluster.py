@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tools.feature_format import featureFormat, targetFeatureSplit
 from sklearn.cluster import KMeans
+from sklearn.preprocessing import MinMaxScaler
 
 
 def draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature 1", f2_name="feature 2"):
@@ -92,13 +93,28 @@ def get_feature(feature):
     return options
 
 
+def feature_rescaling():
+    data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "rb"))
+    data_dict.pop("TOTAL", 0)
+    features_list = "salary", "exercised_stock_options"
+    data = featureFormat(data_dict, features_list)
+    print(data)
+
+    scaler = MinMaxScaler()
+    scaler.fit(data)
+    transformed = scaler.transform(np.array([[200000.,1000000.]]))
+
+    return transformed
+
+
 if __name__ == '__main__':
-    feature_1, feature_2, feature_3, poi = "salary", "exercised_stock_options", "total_payments", "poi"
-    features_list = [poi, feature_1, feature_2]
-    features_list2 = [poi, feature_1, feature_2, feature_3]
-    # plot_clusters(features_list2)
-    # feature = 'exercised_stock_options'
-    feature = 'salary'
-    features = get_feature(feature)
-    print(features)
-    print(min(features.values()), max(features.values()))
+    # feature_1, feature_2, feature_3, poi = "salary", "exercised_stock_options", "total_payments", "poi"
+    # features_list = [poi, feature_1, feature_2]
+    # features_list2 = [poi, feature_1, feature_2, feature_3]
+    # # plot_clusters(features_list2)
+    # # feature = 'exercised_stock_options'
+    # feature = 'salary'
+    # features = get_feature(feature)
+    # print(features)
+    # print(min(features.values()), max(features.values()))
+    print(feature_rescaling())
