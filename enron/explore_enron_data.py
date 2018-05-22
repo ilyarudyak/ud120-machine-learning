@@ -19,7 +19,6 @@ def load_data():
     """
     enron_data = pickle.load(open("final_project_dataset.pkl", "rb"))
     return enron_data
-enron_data = load_data()
 
 
 def process_name(name):
@@ -68,6 +67,10 @@ def total_poi():
     return sum([(1 if enron_data[name]['poi'] else 0) for name in enron_data])
 
 
+def get_poi():
+    return [name for name in enron_data if enron_data[name]['poi']]
+
+
 def quantified_poi(keys):
     """
      return number of people with quantified keys (non NAN)
@@ -78,13 +81,25 @@ def quantified_poi(keys):
 
 
 if __name__ == '__main__':
+    enron_data = load_data()
 
-    james_prentice = process_name('James Prentice')
-    wesley_colwell = process_name('Wesley Colwell')
-    jeffrey_k_skilling = process_name_init('Jeffrey K Skilling')
+    # print(len(enron_data))  # 13
+    # print(len(enron_data['METTS MARK']))  # 14
+    # print(enron_data)
+    # print(enron_data['METTS MARK'].keys())
+    # print(total_poi())  # 15
+    # james_prentice = process_name('James Prentice')
+    # print(enron_data[james_prentice]['total_stock_value'])
+    # kenneth_lay = process_name_init('Kenneth L Lay')
+    # print(enron_data[kenneth_lay])
+    print(get_poi())
 
-    # poi = [person for person in enron_data if enron_data[person]['poi']]
-    keys = ['email_address', 'salary']
-    print(quantified(keys))
+
+    # wesley_colwell = process_name('Wesley Colwell')
+    # jeffrey_k_skilling = process_name_init('Jeffrey K Skilling')
+    #
+    # # poi = [person for person in enron_data if enron_data[person]['poi']]
+    # keys = ['email_address', 'salary']
+    # print(quantified(keys))
 
 
