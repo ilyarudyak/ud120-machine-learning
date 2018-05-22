@@ -27,18 +27,15 @@ def plot_terrain_data():
     plt.scatter(bumpy, grade, c=y_train, cmap='seismic')
     plt.xlabel('bumpy')
     plt.ylabel('grade')
-    plt.show()
 
 
-def nb_classifier():
-    nb = GaussianNB().fit(X_train, y_train)
+def nb_classifier_mlxtend():
     plot_decision_regions(X_train, y_train,
                           clf=nb,
                           legend=2,
                           markers='ooo^v',
                           colors='#66cdaa,#ff0000')
     format_plot()
-    plt.show()
 
 
 def format_plot():
@@ -49,6 +46,25 @@ def format_plot():
     plt.ylim(0, 1.0)
 
 
+def nb_classifier_manual():
+    plot_decision_boundary()
+    plot_terrain_data()
+    format_plot()
+
+
+def plot_decision_boundary():
+    step = .01
+    xx, yy = np.meshgrid(np.arange(0, 1.0, step), np.arange(0, 1.0, step))
+    z = nb.predict(np.c_[xx.ravel(), yy.ravel()])
+    z = z.reshape(xx.shape)
+    plt.pcolormesh(xx, yy, z, cmap='seismic', alpha=.2)
+
+
 if __name__ == '__main__':
     X_train, y_train, X_test, y_test = make_terrain_data()
-    nb_classifier()
+    nb = GaussianNB()
+    nb.fit(X_train, y_train)
+
+    nb_classifier_mlxtend()
+    # nb_classifier_manual()
+    plt.show()
