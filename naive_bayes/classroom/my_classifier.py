@@ -7,6 +7,7 @@ import seaborn as sns; sns.set()
 from sklearn.model_selection import train_test_split
 from mlxtend.plotting import plot_decision_regions
 from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
 
 
 def make_terrain_data(n_points=1000):
@@ -60,11 +61,17 @@ def plot_decision_boundary():
     plt.pcolormesh(xx, yy, z, cmap='seismic', alpha=.2)
 
 
+def get_accuracy():
+    return accuracy_score(y_test, nb.predict(X_test))
+
+
 if __name__ == '__main__':
     X_train, y_train, X_test, y_test = make_terrain_data()
     nb = GaussianNB()
     nb.fit(X_train, y_train)
 
-    nb_classifier_mlxtend()
+    # nb_classifier_mlxtend()
     # nb_classifier_manual()
-    plt.show()
+    # plt.show()
+
+    print(f'accuracy score = {get_accuracy()}')
