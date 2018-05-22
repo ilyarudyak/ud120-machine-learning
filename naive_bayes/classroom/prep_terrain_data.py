@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import random
+import matplotlib.pyplot as plt
 
 
 def makeTerrainData(n_points=1000):
@@ -15,6 +16,7 @@ def makeTerrainData(n_points=1000):
             y[i] = 1
 
     ### split into train/test sets
+
     X = [[g, s] for g, s in zip(grade, bumpy)]
     split = int(0.75 * n_points)
     X_train, X_test = X[0:split], X[split:]
