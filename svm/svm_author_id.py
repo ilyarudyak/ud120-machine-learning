@@ -24,13 +24,21 @@ def svm_demo(c=1.0):
     #########################################################
     # your code goes here ###
     clf = svm.SVC(kernel='rbf', C=c)
+
+    tic = time()
     clf.fit(features_train, labels_train)
+    fit_time = time() - tic
+
+    tic = time()
     pred = clf.predict(features_test)
-    return accuracy_score(labels_test, pred), np.sum(pred)
+    pred_time = time() - tic
+
+    return accuracy_score(labels_test, pred), fit_time, pred_time
     #########################################################
 
 
 if __name__ == '__main__':
     # for c in [10, 100, 1000, 10000]:
     #     print(svm_demo(c))
-    print(svm_demo(10000))
+    accuracy, fit_time, pred_time = svm_demo(10000)
+    print(f'accuracy={accuracy*100:.1f}% fit_time={fit_time:.4f}s pred_time={pred_time:.4f}s')

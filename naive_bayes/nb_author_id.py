@@ -9,6 +9,7 @@
 """
 
 from time import time
+from timeit import timeit
 from tools.email_preprocess import preprocess
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
@@ -26,17 +27,16 @@ def classify():
 
     tic = time()
     clf.fit(features_train, labels_train)
-    toc = time()
-    fit_time = toc - tic
+    fit_time = time() - tic
 
     tic = time()
     pred = clf.predict(features_test)
-    toc = time()
-    pred_time = toc - tic
+    pred_time = time() - tic
 
     return accuracy_score(labels_test, pred), fit_time, pred_time
     #########################################################
 
 
 if __name__ == '__main__':
-    print(classify())
+    accuracy, fit_time, pred_time = classify()
+    print(f'accuracy={accuracy*100:.1f}% fit_time={fit_time:.4f}s pred_time={pred_time:.4f}s')
