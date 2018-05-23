@@ -1,4 +1,3 @@
-import random
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -6,8 +5,7 @@ import seaborn as sns; sns.set()
 
 from sklearn.model_selection import train_test_split
 from mlxtend.plotting import plot_decision_regions
-from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import accuracy_score
+from sklearn.svm import SVC
 
 
 def make_terrain_data(n_points=1000):
@@ -30,9 +28,9 @@ def plot_terrain_data():
     plt.ylabel('grade')
 
 
-def nb_classifier_mlxtend():
+def svm_classifier_mlxtend():
     plot_decision_regions(X_train, y_train,
-                          clf=nb,
+                          clf=svm,
                           legend=2,
                           markers='ooo^v',
                           colors='#66cdaa,#ff0000')
@@ -47,31 +45,12 @@ def format_plot():
     plt.ylim(0, 1.0)
 
 
-def nb_classifier_manual():
-    plot_decision_boundary()
-    plot_terrain_data()
-    format_plot()
-
-
-def plot_decision_boundary():
-    step = .01
-    xx, yy = np.meshgrid(np.arange(0, 1.0, step), np.arange(0, 1.0, step))
-    z = nb.predict(np.c_[xx.ravel(), yy.ravel()])
-    z = z.reshape(xx.shape)
-    plt.pcolormesh(xx, yy, z, cmap='seismic', alpha=.2)
-
-
-def get_accuracy():
-    return accuracy_score(y_test, nb.predict(X_test))
-
-
 if __name__ == '__main__':
     X_train, y_train, X_test, y_test = make_terrain_data()
-    nb = GaussianNB()
-    nb.fit(X_train, y_train)
+    # svm = SVC(kernel="linear").fit(X_train, y_train)
+    # svm = SVC(kernel="rbf", C=10000).fit(X_train, y_train)
+    svm = SVC(kernel="rbf", gamma=100)
+    svm.fit(X_train, y_train)
 
-    # nb_classifier_mlxtend()
-    # nb_classifier_manual()
-    # plt.show()
-
-    print(f'accuracy score = {get_accuracy()}')
+    svm_classifier_mlxtend()
+    plt.show()
