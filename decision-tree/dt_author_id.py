@@ -13,20 +13,25 @@ def dt_classifier():
         Chris has label 1
     """
 
-    # features_train and features_test are the features for the training
-    # and testing datasets, respectively
-    # labels_train and labels_test are the corresponding item labels
-    features_train, features_test, labels_train, labels_test = preprocess()
-
     #########################################################
     # your code goes here ###
     clf = DecisionTreeClassifier(min_samples_split=40)
+
+    tic = time()
     clf.fit(features_train, labels_train)
+    fit_time = time() - tic
+
+    tic = time()
     pred = clf.predict(features_test)
-    return accuracy_score(labels_test, pred)
+    pred_time = time() - tic
+
+    return accuracy_score(labels_test, pred), fit_time, pred_time
     #########################################################
 
 
 if __name__ == '__main__':
-    print(dt_classifier())
+    features_train, features_test, labels_train, labels_test = preprocess()
+    accuracy, fit_time, pred_time = dt_classifier()
+    print(f'accuracy={accuracy*100:.1f}% fit_time={fit_time:.4f}s pred_time={pred_time:.4f}s')
+    # print(len(features_train[0]))
 
