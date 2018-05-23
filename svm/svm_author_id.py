@@ -14,7 +14,7 @@ from sklearn.metrics import accuracy_score
 import numpy as np
 
 
-def svm_demo(c=1.0):
+def svm_demo(kernel='linear', C=1.0):
     # features_train and features_test are the features for the training
     # and testing datasets, respectively
     # labels_train and labels_test are the corresponding item labels
@@ -23,7 +23,7 @@ def svm_demo(c=1.0):
     # labels_train = labels_train[:len(labels_train) // 100]
     #########################################################
     # your code goes here ###
-    clf = svm.SVC(kernel='rbf', C=c)
+    clf = svm.SVC(kernel=kernel, C=C)
 
     tic = time()
     clf.fit(features_train, labels_train)
@@ -37,8 +37,15 @@ def svm_demo(c=1.0):
     #########################################################
 
 
+def optimize_c():
+    for c in [10, 100, 1000, 10000]:
+        accuracy, fit_time, pred_time = svm_demo(kernel='rbf', C=c)
+        print(f'C={c} accuracy={accuracy*100:.1f}%')
+
+
 if __name__ == '__main__':
-    # for c in [10, 100, 1000, 10000]:
-    #     print(svm_demo(c))
-    accuracy, fit_time, pred_time = svm_demo(10000)
+    # accuracy, fit_time, pred_time = svm_demo(kernel='linear')
+    # accuracy, fit_time, pred_time = svm_demo(kernel='rbf')
+    # optimize_c()
+    accuracy, fit_time, pred_time = svm_demo(kernel='rbf', C=1000)
     print(f'accuracy={accuracy*100:.1f}% fit_time={fit_time:.4f}s pred_time={pred_time:.4f}s')
