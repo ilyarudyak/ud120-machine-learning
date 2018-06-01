@@ -13,8 +13,8 @@ from sklearn.metrics import accuracy_score
 ### These files should have been created from the previous (Lesson 10)
 ### mini-project.
 def get_data():
-    words_file = "word_data_overfit.pkl"
-    authors_file = "email_authors_overfit.pkl"
+    words_file = "../text_learning/ir_word_data.pkl"
+    authors_file = "../text_learning/ir_email_authors.pkl"
     word_data = pickle.load(open(words_file, "rb"))
     authors = pickle.load(open(authors_file, "rb"))
 
@@ -26,7 +26,7 @@ def get_data():
     features_train = vectorizer.fit_transform(features_train)
     features_test = vectorizer.transform(features_test).toarray()
 
-    print(vectorizer.get_feature_names()[33604])
+    print(vectorizer.get_feature_names()[21323])
 
     ### a classic way to overfit is to use a small number
     ### of data points and a large number of features;
@@ -50,5 +50,6 @@ def get_most_important_features():
 if __name__ == '__main__':
     np.random.seed(42)
     features_train, features_test, labels_train, labels_test = get_data()
-    # accuracy, feature_importance = fit_decision_tree()
-    # print(get_most_important_features())
+    accuracy, feature_importance = fit_decision_tree()
+    print(accuracy)
+    print(get_most_important_features())

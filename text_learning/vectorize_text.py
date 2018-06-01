@@ -45,7 +45,7 @@ def vectorize_text():
             # once everything is working, remove this line to run over full dataset
             # temp_counter += 1
             # if temp_counter < 200:
-            path = os.path.join('/Users/ilyarudyak/', path[:-1])
+            path = os.path.join('/', path[:-1])
             # print('{}:{}'.format(temp_counter, path))
             email_file = open(path, "r")
 
@@ -53,7 +53,7 @@ def vectorize_text():
             email_text = parse_out_text(email_file)
 
             # use str.replace() to remove any instances of the words
-            for word in ["sara", "shackleton", "chris", "germani"]:
+            for word in ["sara", "shackleton", "chris", "germani", "sshacklensf", "cgermannsf"]:
                 email_text = email_text.replace(word, "")
 
             # append the text to word_data
@@ -82,8 +82,8 @@ def transform(word_data):
 
 if __name__ == '__main__':
     word_data = vectorize_text()
-    vectorizer, X = transform(word_data)
-
-    vocabulary = vectorizer.get_feature_names()
-    print(len(vocabulary), vocabulary[34597])
+    # vectorizer, X = transform(word_data)
+    #
+    # vocabulary = vectorizer.get_feature_names()
+    # print(len(vocabulary), vocabulary[34597])
 
