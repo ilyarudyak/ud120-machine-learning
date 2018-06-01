@@ -47,5 +47,5 @@ if __name__ == '__main__':
     # accuracy, fit_time, pred_time = svm_demo(kernel='linear')
     # accuracy, fit_time, pred_time = svm_demo(kernel='rbf')
     # optimize_c()
-    accuracy, fit_time, pred_time = svm_demo(kernel='rbf', C=1000)
+    accuracy, fit_time, pred_time = svm_demo(kernel='rbf', C=10000)
     print(f'accuracy={accuracy*100:.1f}% fit_time={fit_time:.4f}s pred_time={pred_time:.4f}s')
