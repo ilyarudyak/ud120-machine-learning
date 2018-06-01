@@ -30,6 +30,29 @@ def clean_data():
     return data
 
 
+def add_features():
+    fraction_from_poi_email = dict_to_list("from_poi_to_this_person", "to_messages")
+    fraction_to_poi_email = dict_to_list("from_this_person_to_poi", "from_messages")
+
+    count = 0
+    for i in data:
+        data[i]["fraction_from_poi_email"] = fraction_from_poi_email[count]
+        data[i]["fraction_to_poi_email"] = fraction_to_poi_email[count]
+        count += 1
+
+
+def dict_to_list(key, normalizer):
+    new_list = []
+
+    for i in data:
+        if data[i][key] == "NaN" or data[i][normalizer] == "NaN":
+            new_list.append(0.)
+        elif data[i][key] >= 0:
+            new_list.append(float(data[i][key]) / float(data[i][normalizer]))
+    return new_list
+
+
 if __name__ == '__main__':
     data = clean_data()
-    print(len(data))
+    add_features()
+    print(data['METTS MARK'])
